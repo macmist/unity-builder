@@ -8,6 +8,7 @@ Très simpliste au début
 
 # Résumé
 - Jour 1: 18/06: Définition du jeu et des tâches à réaliser
+- Jour 2: 19/06: Recherche sur le système de sauvegarde/chargement et application sur une scène simple
 
 
 # Ressources
