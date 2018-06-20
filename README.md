@@ -4,11 +4,15 @@ Gestion de ville, à la SimCity, Zeus, Banished
 
 Très simpliste au début
 
+Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/unity-builder
+
 
 
 # Résumé
 - Jour 1: 18/06: Définition du jeu et des tâches à réaliser
 - Jour 2: 19/06: Recherche sur le système de sauvegarde/chargement et application sur une scène simple
+- Jour 3: 20/06: Génération d'un terrain. Utilisation du diagramme de Voronoi. Affichage sur une texture de plan à l'aide d'un bouton.
+3D et sauvegarde/chargement à ajouter
 
 
 # Ressources
