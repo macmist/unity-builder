@@ -13,6 +13,7 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 2: 19/06: Recherche sur le système de sauvegarde/chargement et application sur une scène simple
 - Jour 3: 20/06: Génération d'un terrain. Utilisation du diagramme de Voronoi. Affichage sur une texture de plan à l'aide d'un bouton.
 3D et sauvegarde/chargement à ajouter
+- Jour 4: 21/01: Changement des chances d'appaition des types de sol, passage a la 3D, creation de textures, creation d'un prefab d'arbre, sauvegarde et chargements
 
 
 # Ressources
