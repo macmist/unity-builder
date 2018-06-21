@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+
+[System.Serializable]
 public class MapGenerator {
     public int w = 100;
     public int h = 100;
@@ -10,9 +12,10 @@ public class MapGenerator {
     public TileObject[,] map;
     public List<TileObject> centerPoints;
 
+    [System.Serializable]
     public class TileObject
     {
-        private Vector2 position;
+        private SerializableVector2 position;
         private bool centerPoint;
         private Tile type;
 
@@ -40,6 +43,7 @@ public class MapGenerator {
         }
     }
 
+    [System.Serializable]
     public enum Tile
     {
         GRASS,
@@ -102,8 +106,14 @@ public class MapGenerator {
         {
             int x = Random.Range(0, w);
             int y = Random.Range(0, h);
+
+            Tile tile = Tile.GRASS;
+            float random = Random.value;
+            if (random > 0.8)
+                tile = Tile.TREE;
+            else if (random > 0.7)
+                tile = Tile.DIRT;
             
-            Tile tile = (Tile) Random.Range(0, System.Enum.GetValues(typeof(Tile)).Length);
             map[x, y].CenterPoint = true;
             map[x, y].Type = tile;
             centerPoints.Add(map[x, y]);

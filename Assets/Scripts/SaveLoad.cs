@@ -10,11 +10,6 @@ public static class SaveLoad  {
 
     public static void Save()
     {
-        Game currentGame = Game.getInstance();
-        currentGame.object2.setPosition(currentGame.object2.gameObject.transform.position);
-        currentGame.object1.setPosition(currentGame.object1.gameObject.transform.position);
-
-
         savedGames.Add(Game.getInstance());
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/savedGames.jean");

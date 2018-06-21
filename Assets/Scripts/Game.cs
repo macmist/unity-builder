@@ -10,13 +10,10 @@ using UnityEngine;
 [System.Serializable]
 public class Game {
     private static Game instance;
-    public TestObject object1;
-    public TestObject object2;
+    public MapGenerator.TileObject[,] map;
 
     private Game()
     {
-        object1 = new TestObject();
-        object2 = new TestObject();
     }
 
     
