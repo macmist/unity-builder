@@ -72,5 +72,6 @@ public class GameController : MonoBehaviour {
             }
         }
         Game.getInstance().map = map;
+        Game.getInstance().enableMouse = true;
     }
 }

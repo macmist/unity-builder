@@ -11,6 +11,7 @@ using UnityEngine;
 public class Game {
     private static Game instance;
     public MapGenerator.TileObject[,] map;
+    public bool enableMouse = false;
 
     private Game()
     {
