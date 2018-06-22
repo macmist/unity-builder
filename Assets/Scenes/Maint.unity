@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 450555939}
   - component: {fileID: 450555938}
+  - component: {fileID: 450555940}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -157,6 +158,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &450555940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 450555937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67eb1387319c9b24da1a79bfea9e2325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  go: {fileID: 0}
+  moveSpeed: 0.1
 --- !u!1 &1232720569
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +248,7 @@ GameObject:
   - component: {fileID: 1919858821}
   - component: {fileID: 1919858820}
   - component: {fileID: 1919858819}
+  - component: {fileID: 1919858824}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -304,10 +319,22 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1919858818}
-  m_LocalRotation: {x: 0.15514189, y: -0, z: -0, w: 0.98789227}
-  m_LocalPosition: {x: 0, y: 3.59, z: -10}
+  m_LocalRotation: {x: 0.41300452, y: -0, z: -0, w: 0.910729}
+  m_LocalPosition: {x: 53, y: 22.6, z: 17.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 17.85, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 48.787003, y: 0, z: 0}
+--- !u!114 &1919858824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1919858818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd5757ed97d04f46b0e1bf74216643b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 15
