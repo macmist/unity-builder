@@ -10,12 +10,14 @@ public class MouseControl : MonoBehaviour
 {
     public GameObject go;
     public float moveSpeed = 0.1f;
+    private bool pathDone = false;
     
     void Start()
     {
-        go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go = Instantiate(go, Vector3.zero, Quaternion.identity);
         go.transform.position = new Vector3(0, 1, 0);
     }
+
 
     void Update()
     {
@@ -32,8 +34,39 @@ public class MouseControl : MonoBehaviour
             newy.y = 1;
             
             StayInMap(new Vector3(Mathf.Round(newy.x), Mathf.Round(newy.y), Mathf.Round(newy.z)));
-        }
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+                DropObject();
 
+            if (!pathDone)
+            {
+                pathDone = true;
+                Node start = new Node(10, 10, 0, null);
+                Node end = new Node(25, 30, 0, null);
+                AStar astar = new AStar();
+                Node path = astar.GetPath(Game.getInstance().map, start, end);
+                PrintRoad(path);
+            }
+        }
+    }
+
+    public void PrintRoad(Node path)
+    {
+        if (path == null) {
+            return;
+        }
+        Node current = path;
+        while(current != null)
+        {
+            Vector3 position = new Vector3(current.x, 1, current.y);
+            Instantiate(go, position, Quaternion.identity);
+            current = current.parent;
+        }
+    }
+
+
+    private void DropObject()
+    {
+        go = Instantiate(go, Vector3.zero, Quaternion.identity);
     }
 
     /// <summary>

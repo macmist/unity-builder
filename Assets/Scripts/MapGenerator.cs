@@ -6,8 +6,8 @@ using System.Linq;
 
 [System.Serializable]
 public class MapGenerator {
-    public int w = 100;
-    public int h = 100;
+    public int w = 50;
+    public int h = 50;
     public int centerPointNumber = 10;
     public TileObject[,] map;
     public List<TileObject> centerPoints;

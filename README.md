@@ -15,6 +15,9 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 3D et sauvegarde/chargement à ajouter
 - Jour 4: 21/06: Changement des chances d'appaition des types de sol, passage a la 3D, creation de textures, creation d'un prefab d'arbre, sauvegarde et chargements
 - Jour 5: 22/06: Déplacement d'un objet par rapport à la grille + suivi de la caméra lorsque le curseur approche des bords de l'écran
+- Jour 6 et 7: 23-24/06: Mise à jour d'unity et galère avec Visual Studio + recherche de comment poser une route
+- Jour 8: 25/06: Pose d'un bloc de route, puis pose d'une route entre deux points avec l'algorithme A*
+- 
 
 # Ressources
 - Argent
