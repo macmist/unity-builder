@@ -12,11 +12,21 @@ public class MouseControl : MonoBehaviour
     public GameObject go;
     public float moveSpeed = 0.1f;
     private bool pathDone = false;
-    
+    private MapGenerator.TileObject[,] map;
+    private List<GameObject> road;
+    private Node start;
+    private Node end;
+    private AStar astar;
+    private Vector3 mousePos;
+
+
+
+
     void Start()
     {
         go = Instantiate(go, Vector3.zero, Quaternion.identity);
         go.transform.position = new Vector3(0, 1, 0);
+        astar = new AStar();
     }
 
 
@@ -33,22 +43,27 @@ public class MouseControl : MonoBehaviour
 
             }
             newy.y = 1;
-            
-            StayInMap(new Vector3(Mathf.Round(newy.x), Mathf.Round(newy.y), Mathf.Round(newy.z)));
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-                DropObject();
 
-            if (!pathDone)
+            Vector3 pos = new Vector3(Mathf.Round(newy.x), Mathf.Round(newy.y), Mathf.Round(newy.z));
+            pos = StayInMap(pos);
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                MapGenerator.TileObject[,] map = Game.getInstance().map;
-                pathDone = true;
-                int sep = map.GetLength(0) / 2;
-                Node start = PickRandomNode(0, sep, map);
-                Node end = PickRandomNode(sep, map.GetLength(0), map);
-                AStar astar = new AStar();
-                Node path = astar.GetPath(map, start, end);
-                PrintRoad(path);
+                start = new Node((int)pos.x, (int)pos.z, 0, null);
+                road = new List<GameObject>();
             }
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                if (end == null || end.x != pos.x || end.y != pos.z)
+                {
+                    end = new Node((int)pos.x, (int)pos.z, 0, null);
+                    map = Game.getInstance().map;
+                    Node path = astar.GetPath(map, start, end);
+                    PrintRoad(path);
+                }
+            }
+
+           
+            
         }
     }
 
@@ -67,6 +82,10 @@ public class MouseControl : MonoBehaviour
 
     public void PrintRoad(Node path)
     {
+        foreach (GameObject g in road)
+            Destroy(g);
+        road.Clear();
+
         if (path == null) {
             return;
         }
@@ -77,6 +96,7 @@ public class MouseControl : MonoBehaviour
             GameObject r = Instantiate(go, position, Quaternion.identity);
             if (current.direction >= Direction.UP)
                 r.transform.Rotate(0, 90, 0);
+            road.Add(r);
             current = current.parent;
         }
     }
@@ -90,7 +110,7 @@ public class MouseControl : MonoBehaviour
     /// <summary>
     /// Make sure the cube is stil in the map
     /// </summary>
-    private void StayInMap(Vector3 newPos)
+    private Vector3 StayInMap(Vector3 newPos)
     {
         if (Game.getInstance().map != null)
         {
@@ -107,5 +127,7 @@ public class MouseControl : MonoBehaviour
                 newPos.z = 0;
             go.transform.position = newPos;
         }
+        mousePos = newPos;
+        return newPos;
     }
 }

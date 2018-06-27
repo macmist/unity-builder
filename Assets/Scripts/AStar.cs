@@ -32,6 +32,8 @@ public class AStar {
     private List<Node> GetNeighbors(Node point)
     {
         List<Node> neighbors = new List<Node>();
+        if (point == null)
+            return null;
         if (point.x - 1 > 0 && map[point.x - 1, point.y].Type != MapGenerator.Tile.TREE)
         {
             Node n = new Node(point.x - 1, point.y, point.dCost + 1, point);
@@ -88,6 +90,8 @@ public class AStar {
     {
         this.map = map;
         this.end = end;
+        if (start == null || end == null || map == null)
+            Debug.Log("tqmere");
         openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         openList.Add(start);
