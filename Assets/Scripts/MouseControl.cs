@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using System.Collections;
 
 
 
@@ -39,14 +40,29 @@ public class MouseControl : MonoBehaviour
 
             if (!pathDone)
             {
+                MapGenerator.TileObject[,] map = Game.getInstance().map;
                 pathDone = true;
-                Node start = new Node(10, 10, 0, null);
-                Node end = new Node(25, 30, 0, null);
+                int sep = map.GetLength(0) / 2;
+                Node start = PickRandomNode(0, sep, map);
+                Node end = PickRandomNode(sep, map.GetLength(0), map);
                 AStar astar = new AStar();
-                Node path = astar.GetPath(Game.getInstance().map, start, end);
+                Node path = astar.GetPath(map, start, end);
                 PrintRoad(path);
             }
         }
+    }
+
+    public Node PickRandomNode(int xBegin, int xEnd, MapGenerator.TileObject[,] map)
+    {
+        int x = UnityEngine.Random.Range(xBegin, xEnd);
+        int y = UnityEngine.Random.Range(0, map.GetLength(1));
+
+        while (map[x, y].Type == MapGenerator.Tile.TREE)
+        {
+            x = UnityEngine.Random.Range(xBegin, xEnd);
+            y = UnityEngine.Random.Range(0, map.GetLength(1));
+        }
+        return new Node(x, y, 0, null);
     }
 
     public void PrintRoad(Node path)
@@ -58,7 +74,9 @@ public class MouseControl : MonoBehaviour
         while(current != null)
         {
             Vector3 position = new Vector3(current.x, 1, current.y);
-            Instantiate(go, position, Quaternion.identity);
+            GameObject r = Instantiate(go, position, Quaternion.identity);
+            if (current.direction >= Direction.UP)
+                r.transform.Rotate(0, 90, 0);
             current = current.parent;
         }
     }

@@ -2,12 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction
+{
+    NONE,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+}
+
 public class Node {
     public int x;
     public int y;
 
     public int dCost;
     public int dHeuristic;
+    public int directionCost;
+    public Direction direction;
 
     public Node parent;
 
@@ -23,7 +34,7 @@ public class Node {
 
     public int dTotal
     {
-        get { return dCost + dHeuristic; }
+        get { return dCost + dHeuristic + directionCost; }
     }
 
     public bool equal(Node e)

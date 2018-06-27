@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
     public GameObject grass;
     public GameObject tree;
     public GameObject dirt;
-
+    public bool stopAstar;
 
 
     void Start()
@@ -73,5 +73,10 @@ public class GameController : MonoBehaviour {
         }
         Game.getInstance().map = map;
         Game.getInstance().enableMouse = true;
+    }
+
+    private void Update()
+    {
+        Game.getInstance().stopAstar = stopAstar;
     }
 }

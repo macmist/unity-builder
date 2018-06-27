@@ -25,35 +25,47 @@ public class AStar {
         int dx = point.x - end.x;
         int dy = point.y - end.y;
 
-        return dx * dx + dy * dy;
+        return Mathf.Abs(dx) + Mathf.Abs(dy);
     }
 
 
     private List<Node> GetNeighbors(Node point)
     {
         List<Node> neighbors = new List<Node>();
-        if (point.x - 1 > 0)
+        if (point.x - 1 > 0 && map[point.x - 1, point.y].Type != MapGenerator.Tile.TREE)
         {
             Node n = new Node(point.x - 1, point.y, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
+            n.direction = Direction.LEFT;
+            if (point != null && point.direction != n.direction)
+                n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.x + 1 < map.GetLength(0))
+        if (point.x + 1 < map.GetLength(0) && map[point.x + 1, point.y].Type != MapGenerator.Tile.TREE)
         {
             Node n = new Node(point.x + 1, point.y, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
+            n.direction = Direction.RIGHT;
+            if (point != null && point.direction != n.direction)
+                n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.y - 1 > 0)
+        if (point.y - 1 > 0 && map[point.x, point.y - 1].Type != MapGenerator.Tile.TREE)
         {
-            Node n = new Node(point.x, point.y -1, point.dCost + 1, point);
+            Node n = new Node(point.x, point.y - 1, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
+            n.direction = Direction.DOWN;
+            if (point != null && point.direction != n.direction)
+                n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.y + 1 < map.GetLength(0))
+        if (point.y + 1 < map.GetLength(0) && map[point.x, point.y + 1].Type != MapGenerator.Tile.TREE)
         {
             Node n = new Node(point.x, point.y + 1, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
+            n.direction = Direction.UP;
+            if (point != null && point.direction != n.direction)
+                n.directionCost = 10;
             neighbors.Add(n);
         }
         return neighbors;
@@ -65,11 +77,12 @@ public class AStar {
         {
             if (e.equal(n))
             {
-                return e.dTotal < n.dTotal;
+                return e.dTotal <= n.dTotal;
             }
         }
         return false;
     }
+
     
     public Node GetPath(MapGenerator.TileObject[,] map, Node start, Node end)
     {
@@ -78,11 +91,8 @@ public class AStar {
         openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         openList.Add(start);
-        if (start.equal(end))
-        {
-            return end;
-        }
-        while (openList.Count > 0)
+
+        while (openList.Count > 0 && !Game.getInstance().stopAstar)
         {
             Node a = GetMostAccuratePoint();
             if (end.equal(a))
@@ -91,7 +101,7 @@ public class AStar {
             }
             foreach(Node neighbor in GetNeighbors(a))
             {
-                if (HasWithLesserCost(openList, neighbor) || HasWithLesserCost(closedList, neighbor))
+                if (HasWithLesserCost(openList, neighbor) || HasWithLesserCost(closedList, neighbor)) 
                     continue;
                 openList.Add(neighbor);
             }

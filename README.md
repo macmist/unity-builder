@@ -17,7 +17,7 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 5: 22/06: Déplacement d'un objet par rapport à la grille + suivi de la caméra lorsque le curseur approche des bords de l'écran
 - Jour 6 et 7: 23-24/06: Mise à jour d'unity et galère avec Visual Studio + recherche de comment poser une route
 - Jour 8: 25/06: Pose d'un bloc de route, puis pose d'une route entre deux points avec l'algorithme A*
-- 
+- Jour 9: 26/06: Amélioration du pathfinding, texturisation des routes
 
 # Ressources
 - Argent

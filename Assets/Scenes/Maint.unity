@@ -145,6 +145,7 @@ MonoBehaviour:
   grass: {fileID: 1963058609865272, guid: 9c623bf67addf409786ab47bbab1a545, type: 2}
   tree: {fileID: 1179900898415126, guid: 13796439d686d4f5f9f3eceb0e225d03, type: 2}
   dirt: {fileID: 1354315926134912, guid: 9b2bab3e7c1bc4bd884979c3f818f8a1, type: 2}
+  stopAstar: 0
 --- !u!4 &450555939
 Transform:
   m_ObjectHideFlags: 0
