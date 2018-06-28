@@ -28,8 +28,6 @@ public static class SaveLoad  {
             file.Close();
             if (savedGames != null && savedGames.Count > 0)
                 Game.setGame(savedGames[0]);
-            else
-                Debug.Log("null or empty");
             Debug.Log("Loaded");
         }
     }

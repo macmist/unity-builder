@@ -17,6 +17,7 @@ public class MapGenerator {
     {
         private SerializableVector2 position;
         private bool centerPoint;
+        private DropableObject building;
         private Tile type;
 
         public Vector2 Position
@@ -40,6 +41,11 @@ public class MapGenerator {
         public TileObject(int x, int y)
         {
             position = new Vector2(x, y);
+        }
+
+        public DropableObject Building {
+            get { return building; }
+            set { building = value; }
         }
     }
 

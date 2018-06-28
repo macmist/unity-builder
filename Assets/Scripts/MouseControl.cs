@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +17,6 @@ public class MouseControl : MonoBehaviour
     private Node start;
     private Node end;
     private AStar astar;
-    private Vector3 mousePos;
 
 
 
@@ -53,7 +52,7 @@ public class MouseControl : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                if (end == null || end.x != pos.x || end.y != pos.z)
+                if (end == null || end.x != (int) pos.x || end.y != (int) pos.z)
                 {
                     end = new Node((int)pos.x, (int)pos.z, 0, null);
                     map = Game.getInstance().map;
@@ -61,9 +60,6 @@ public class MouseControl : MonoBehaviour
                     PrintRoad(path);
                 }
             }
-
-           
-            
         }
     }
 
@@ -83,7 +79,14 @@ public class MouseControl : MonoBehaviour
     public void PrintRoad(Node path)
     {
         foreach (GameObject g in road)
+        {
             Destroy(g);
+            Vector3 position = g.transform.position;
+            MapGenerator.TileObject tile = map[(int)position.x, (int)position.z];
+            if (tile.Building != null && tile.Building.Building == Building.ROAD) {
+                map[(int)position.x, (int)position.z].Building = null;
+            }
+        }
         road.Clear();
 
         if (path == null) {
@@ -92,12 +95,23 @@ public class MouseControl : MonoBehaviour
         Node current = path;
         while(current != null)
         {
-            Vector3 position = new Vector3(current.x, 1, current.y);
-            GameObject r = Instantiate(go, position, Quaternion.identity);
-            if (current.direction >= Direction.UP)
-                r.transform.Rotate(0, 90, 0);
-            road.Add(r);
+
+            MapGenerator.TileObject tile = map[current.x, current.y];
+            if (tile.Building == null)
+            {
+                Vector3 position = new Vector3(current.x, 1, current.y);
+                GameObject r = Instantiate(go, position, Quaternion.identity);
+                if (current.direction >= Direction.UP)
+                    r.transform.Rotate(0, 90, 0);
+                road.Add(r);
+                DropableObject building = new DropableObject();
+                building.GameObject = r;
+                building.Building = Building.ROAD;
+                building.Direction = current.direction;
+                map[current.x, current.y].Building = building;
+            }
             current = current.parent;
+
         }
     }
 
@@ -112,9 +126,10 @@ public class MouseControl : MonoBehaviour
     /// </summary>
     private Vector3 StayInMap(Vector3 newPos)
     {
-        if (Game.getInstance().map != null)
+        if (map == null)
+            map = Game.getInstance().map;
+        if (map != null)
         {
-            MapGenerator.TileObject[,] map = Game.getInstance().map;
             int w = map.GetLength(0);
             int h = map.GetLength(1);
             if (newPos.x >= w)
@@ -127,7 +142,6 @@ public class MouseControl : MonoBehaviour
                 newPos.z = 0;
             go.transform.position = newPos;
         }
-        mousePos = newPos;
         return newPos;
     }
 }

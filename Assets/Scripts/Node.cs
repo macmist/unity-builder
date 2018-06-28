@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum Direction
 {
     NONE,
     LEFT,
     RIGHT,
+    BOTH,
     UP,
     DOWN
 }
