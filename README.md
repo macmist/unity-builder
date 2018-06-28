@@ -19,6 +19,7 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 8: 25/06: Pose d'un bloc de route, puis pose d'une route entre deux points avec l'algorithme A*
 - Jour 9: 26/06: Amélioration du pathfinding, texturisation des routes
 - Jour 10: 27/06: Cliqué glissé pour créer une nouvelle route
+- Jour 11: 28/06: Sauvegarde/Chargement des routes
 
 # Ressources
 - Argent

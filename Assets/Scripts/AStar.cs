@@ -90,8 +90,7 @@ public class AStar {
     {
         this.map = map;
         this.end = end;
-        if (start == null || end == null || map == null)
-            Debug.Log("tqmere");
+
         openList = new List<Node>();
         List<Node> closedList = new List<Node>();
         openList.Add(start);
