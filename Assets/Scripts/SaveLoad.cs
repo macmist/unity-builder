@@ -15,7 +15,6 @@ public static class SaveLoad  {
         FileStream file = File.Create(Application.persistentDataPath + "/savedGames.jean");
         bf.Serialize(file, SaveLoad.savedGames);
         file.Close();
-        Debug.Log("Saved");
     }
 
     public static void Load()
@@ -28,7 +27,6 @@ public static class SaveLoad  {
             file.Close();
             if (savedGames != null && savedGames.Count > 0)
                 Game.setGame(savedGames[0]);
-            Debug.Log("Loaded");
         }
     }
 }

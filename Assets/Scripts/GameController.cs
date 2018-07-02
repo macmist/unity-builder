@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
     public GameObject tree;
     public GameObject dirt;
     public bool stopAstar;
-
+    private float groundHeight = 1;
 
     void Start()
     {
@@ -61,6 +61,10 @@ public class GameController : MonoBehaviour {
 
         objectMap = new GameObject[map.GetLength(0), map.GetLength(1)];
         GameObject road = Resources.Load("Prefabs/road", typeof(GameObject)) as GameObject;
+        GameObject house = Resources.Load("Prefabs/house", typeof(GameObject)) as GameObject;
+        float roadY = 1;
+        Collider roadCol = null;
+
         for (int i = 0; i < map.GetLength(0); ++i)
         {
             for (int j = 0; j < map.GetLength(1); ++j)
@@ -85,16 +89,29 @@ public class GameController : MonoBehaviour {
                     switch (b.Building)
                     {
                     case Building.ROAD:
-                            GameObject go = Instantiate(road, new Vector3(i, 1, j), Quaternion.identity);
+                            GameObject go = Instantiate(road, new Vector3(i, roadY, j), Quaternion.identity);
+                            if (roadCol == null)
+                            {
+                                roadCol = go.GetComponent<Collider>();
+                                roadY = roadCol.bounds.size.y / 2 + groundHeight / 2;
+                                Debug.Log(roadCol.bounds.size);
+                                go.transform.position = new Vector3(i, roadY, j);
+                            }
                             if (b.Direction >= Direction.UP)
                                 go.transform.Rotate(0, 90, 0);
                             b.GameObject = go;
+                            b.Prefab = road;
+                        break;
+                    case Building.HOUSE:
+                            GameObject go2 = Instantiate(house, new Vector3(i, 1, j), Quaternion.identity);
+                            b.GameObject = go2;
+                            b.Prefab = house;
                         break;
                     }
                 }
             }
         }
-        Game.getInstance().map = map;
+        Game.getInstance().map = map;   
         Game.getInstance().enableMouse = true;
     }
 

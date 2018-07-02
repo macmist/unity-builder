@@ -5,7 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public enum Building
 {
-    ROAD
+    ROAD,
+    HOUSE
 }
 
 [System.Serializable]
@@ -15,6 +16,9 @@ public class DropableObject {
 
     [System.NonSerialized]
     private GameObject gameObject;
+
+    [System.NonSerialized]
+    private GameObject prefab;
 
     public Building Building {
         get { return building; }
@@ -30,5 +34,11 @@ public class DropableObject {
     public GameObject GameObject {
         get { return gameObject; }
         set { gameObject = value; }
+    }
+
+    public GameObject Prefab
+    {
+        get { return prefab; }
+        set { prefab = value; }
     }
 }

@@ -9,29 +9,44 @@ using System.Collections;
 
 public class MouseControl : MonoBehaviour
 {
-    public GameObject go;
+    private GameObject go;
     public float moveSpeed = 0.1f;
-    private bool pathDone = false;
+
     private MapGenerator.TileObject[,] map;
     private List<GameObject> road;
     private Node start;
     private Node end;
     private AStar astar;
+    private DropableObject currentBuilding;
+    private Vector3 mousePos;
+    private float offset;
+    private float groundHeight = 1;
 
-
-
+    public void SetCurrentBuilding(DropableObject building) {
+        currentBuilding = building;
+        if (Game.getInstance().enableMouse) {
+            if (go != null)
+                Destroy(go);
+            go = Instantiate(currentBuilding.Prefab, Vector3.zero, Quaternion.identity);
+            go.transform.position = new Vector3(0, 1, 0);
+            currentBuilding.GameObject = go;
+            offset = 1;
+            Collider col = go.GetComponent<Collider>();
+            if (col != null)
+                offset = col.bounds.size.y / 2 + groundHeight / 2;
+        }
+    }
 
     void Start()
     {
-        go = Instantiate(go, Vector3.zero, Quaternion.identity);
-        go.transform.position = new Vector3(0, 1, 0);
+
         astar = new AStar();
     }
 
 
     void Update()
     {
-        if (Game.getInstance().enableMouse)
+        if (Game.getInstance().enableMouse && currentBuilding != null)
         {
             Vector3 newy = Vector3.zero;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,19 +60,33 @@ public class MouseControl : MonoBehaviour
 
             Vector3 pos = new Vector3(Mathf.Round(newy.x), Mathf.Round(newy.y), Mathf.Round(newy.z));
             pos = StayInMap(pos);
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            mousePos = pos;
+            if (currentBuilding.Prefab != null)
             {
-                start = new Node((int)pos.x, (int)pos.z, 0, null);
-                road = new List<GameObject>();
-            }
-            if (Input.GetKey(KeyCode.Mouse0))
-            {
-                if (end == null || end.x != (int) pos.x || end.y != (int) pos.z)
+                if (currentBuilding.Building == Building.ROAD)
                 {
-                    end = new Node((int)pos.x, (int)pos.z, 0, null);
-                    map = Game.getInstance().map;
-                    Node path = astar.GetPath(map, start, end);
-                    PrintRoad(path);
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        start = new Node((int)pos.x, (int)pos.z, 0, null);
+                        road = new List<GameObject>();
+                    }
+                    if (Input.GetKey(KeyCode.Mouse0))
+                    {
+                        if (end == null || end.x != (int)pos.x || end.y != (int)pos.z)
+                        {
+                            end = new Node((int)pos.x, (int)pos.z, 0, null);
+                            map = Game.getInstance().map;
+                            Node path = astar.GetPath(map, start, end);
+                            PrintRoad(path);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        DropObject();
+                    }
                 }
             }
         }
@@ -99,26 +128,37 @@ public class MouseControl : MonoBehaviour
             MapGenerator.TileObject tile = map[current.x, current.y];
             if (tile.Building == null)
             {
-                Vector3 position = new Vector3(current.x, 1, current.y);
-                GameObject r = Instantiate(go, position, Quaternion.identity);
+                Vector3 position = new Vector3(current.x, offset, current.y);
+                GameObject r = Instantiate(currentBuilding.Prefab, position, Quaternion.identity);
                 if (current.direction >= Direction.UP)
                     r.transform.Rotate(0, 90, 0);
                 road.Add(r);
                 DropableObject building = new DropableObject();
                 building.GameObject = r;
+                building.Prefab = currentBuilding.Prefab;
                 building.Building = Building.ROAD;
                 building.Direction = current.direction;
                 map[current.x, current.y].Building = building;
             }
             current = current.parent;
-
         }
     }
 
 
     private void DropObject()
     {
-        go = Instantiate(go, Vector3.zero, Quaternion.identity);
+        if (Game.getInstance().map != null && mousePos != null)
+        {
+            if (Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building == null)
+            {
+                DropableObject dropable = new DropableObject();
+                dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);;
+                dropable.Prefab = currentBuilding.Prefab;
+                dropable.Building = currentBuilding.Building;
+                Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building = dropable;
+            }
+
+        }
     }
 
     /// <summary>
@@ -140,6 +180,7 @@ public class MouseControl : MonoBehaviour
                 newPos.z = h - 1;
             if (newPos.z < 0)
                 newPos.z = 0;
+            newPos.y = offset;
             go.transform.position = newPos;
         }
         return newPos;
