@@ -6,8 +6,8 @@ using System.Linq;
 
 [System.Serializable]
 public class MapGenerator {
-    public int w = 50;
-    public int h = 50;
+    public int w = 30;
+    public int h = 30;
     public int centerPointNumber = 10;
     public TileObject[,] map;
     public List<TileObject> centerPoints;
@@ -17,7 +17,7 @@ public class MapGenerator {
     {
         private SerializableVector2 position;
         private bool centerPoint;
-        private DropableObject building;
+        private Building building;
         private Tile type;
 
         public Vector2 Position
@@ -43,7 +43,7 @@ public class MapGenerator {
             position = new Vector2(x, y);
         }
 
-        public DropableObject Building {
+        public Building Building {
             get { return building; }
             set { building = value; }
         }

@@ -21,7 +21,7 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 10: 27/06: Cliqué glissé pour créer une nouvelle route
 - Jour 11: 28/06: Sauvegarde/Chargement des routes
 - Jour 12: 02/07: Nouveau bloc, changement de bloc avec 1 et 2, ajout du bloc au clic, sauvegarde et chargement du bloc, placement de tous les blocs a la bonne hauteur
-
+- Jour 13: 03/07: Correction du sens du premier item de route en fonction du sens des suivants + refactorisation du code + tests UI
 
 # Ressources
 - Argent

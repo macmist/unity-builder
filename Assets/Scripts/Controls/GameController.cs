@@ -83,12 +83,12 @@ public class GameController : MonoBehaviour {
                         break;
                     default: break;
                 }
-                DropableObject b = map[i, j].Building;
+                Building b = map[i, j].Building;
                 if (b != null)
                 {
-                    switch (b.Building)
+                    switch (b.BuildingType)
                     {
-                    case Building.ROAD:
+                        case BuildingType.ROAD:
                             GameObject go = Instantiate(road, new Vector3(i, roadY, j), Quaternion.identity);
                             if (roadCol == null)
                             {
@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour {
                             b.GameObject = go;
                             b.Prefab = road;
                         break;
-                    case Building.HOUSE:
+                        case BuildingType.HOUSE:
                             GameObject go2 = Instantiate(house, new Vector3(i, 1, j), Quaternion.identity);
                             b.GameObject = go2;
                             b.Prefab = house;

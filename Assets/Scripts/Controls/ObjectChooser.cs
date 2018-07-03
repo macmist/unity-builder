@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectChooser : MonoBehaviour {
-    private DropableObject current;
+    private Building current;
     private MouseControl mouseController;
 	// Use this for initialization
 	void Start () {
@@ -11,23 +11,21 @@ public class ObjectChooser : MonoBehaviour {
 	}
 
     private void LoadRoad() {
-        if (current == null || current.Building != Building.ROAD)
+        if (current == null || current.BuildingType != BuildingType.ROAD)
         {
             GameObject road = Resources.Load("Prefabs/road", typeof(GameObject)) as GameObject;
-            current = new DropableObject();
+            current = new Road();
             current.Prefab = road;
-            current.Building = Building.ROAD;
             mouseController.SetCurrentBuilding(current);
         }
     }
 
     private void LoadHouse()
     {
-        if (current == null || current.Building != Building.HOUSE)
+        if (current == null || current.BuildingType != BuildingType.HOUSE)
         {
             GameObject house = Resources.Load("Prefabs/house", typeof(GameObject)) as GameObject;
-            current = new DropableObject();
-            current.Building = Building.HOUSE;
+            current = new House();
             current.Prefab = house;
             mouseController.SetCurrentBuilding(current);
         }
