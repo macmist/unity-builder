@@ -63,6 +63,9 @@ public class GameController : MonoBehaviour {
         GameObject road = Resources.Load("Prefabs/road", typeof(GameObject)) as GameObject;
         GameObject house = Resources.Load("Prefabs/house", typeof(GameObject)) as GameObject;
         float roadY = 1;
+        float houseOffset = roadY / 2;
+
+        Collider houseCollider = null;
         Collider roadCol = null;
 
         for (int i = 0; i < map.GetLength(0); ++i)
@@ -95,8 +98,9 @@ public class GameController : MonoBehaviour {
                                 roadCol = go.GetComponent<Collider>();
                                 roadY = roadCol.bounds.size.y / 2 + groundHeight / 2;
                                 Debug.Log(roadCol.bounds.size);
-                                go.transform.position = new Vector3(i, roadY, j);
                             }
+                            go.transform.position = new Vector3(i, roadY, j);
+
                             if (b.Direction >= Direction.UP)
                                 go.transform.Rotate(0, 90, 0);
                             b.GameObject = go;
@@ -104,6 +108,12 @@ public class GameController : MonoBehaviour {
                         break;
                         case BuildingType.HOUSE:
                             GameObject go2 = Instantiate(house, new Vector3(i, 1, j), Quaternion.identity);
+                            if (houseCollider == null)
+                            {
+                                houseCollider = go2.GetComponent<Collider>();
+                                houseOffset = houseCollider.bounds.size.y / 2 + groundHeight / 2;
+                            }
+                            go2.transform.position = new Vector3(i, houseOffset, j);
                             b.GameObject = go2;
                             b.Prefab = house;
                         break;
