@@ -70,31 +70,38 @@ public class MouseControl : MonoBehaviour
             }
             if (currentBuilding.Prefab != null)
             {
-                if (currentBuilding.BuildingType == BuildingType.ROAD)
+                MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
+                if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE)
                 {
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    currentBuilding.ApplyDefaultColor();
+                    if (currentBuilding.BuildingType == BuildingType.ROAD)
                     {
-                        start = new Node((int)pos.x, (int)pos.z, 0, null);
-                        road = new List<GameObject>();
-                    }
-                    if (Input.GetKey(KeyCode.Mouse0))
-                    {
-                        if (end == null || end.x != (int)pos.x || end.y != (int)pos.z)
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
-                            end = new Node((int)pos.x, (int)pos.z, 0, null);
-                            map = Game.getInstance().map;
-                            Node path = astar.GetPath(map, start, end);
-                            PrintRoad(path);
+                            start = new Node((int)pos.x, (int)pos.z, 0, null);
+                            road = new List<GameObject>();
+                        }
+                        if (Input.GetKey(KeyCode.Mouse0))
+                        {
+                            if (end == null || end.x != (int)pos.x || end.y != (int)pos.z)
+                            {
+                                end = new Node((int)pos.x, (int)pos.z, 0, null);
+                                map = Game.getInstance().map;
+                                Node path = astar.GetPath(map, start, end);
+                                PrintRoad(path);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            DropObject();
                         }
                     }
                 }
                 else
-                {
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-                        DropObject();
-                    }
-                }
+                    currentBuilding.ChangeColor(Color.red);
             }
         }
     }
@@ -157,7 +164,8 @@ public class MouseControl : MonoBehaviour
     {
         if (Game.getInstance().map != null && mousePos != null)
         {
-            if (Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building == null)
+            MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
+            if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE)
             {
                 Building dropable = currentBuilding.SimpleCopy();
                 dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);

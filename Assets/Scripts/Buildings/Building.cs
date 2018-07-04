@@ -14,6 +14,10 @@ public class Building {
     private BuildingType buildingType;
     private Direction direction;
     private bool stopped = false;
+    private bool isDefaultColors = false;
+
+    [System.NonSerialized]
+    private Dictionary<string, Color> defaultColors;
 
     [System.NonSerialized]
     private GameObject gameObject;
@@ -34,7 +38,10 @@ public class Building {
 
     public GameObject GameObject {
         get { return gameObject; }
-        set { gameObject = value; }
+        set {
+            gameObject = value;
+            RegisterColors();
+        }
     }
 
     public GameObject Prefab
@@ -119,5 +126,50 @@ public class Building {
     {
         direction = newDirection;
         RotateToDirection();
+    }
+
+    public void RegisterColors()
+    {
+        defaultColors = new Dictionary<string, Color>();
+        Renderer rend = gameObject.GetComponent<Renderer>();
+        foreach (Material mat in rend.materials)
+        {
+            defaultColors.Add(mat.name, mat.GetColor("_Color"));
+        }
+        isDefaultColors = true;
+    }
+
+    public void ChangeColor(Color color)
+    {
+        if (gameObject != null)
+        {
+            //Fetch the Renderer from the GameObject
+            Renderer rend = gameObject.GetComponent<Renderer>();
+            foreach (Material mat in rend.materials)
+            {
+                mat.SetColor("_Color", color);
+            }
+            isDefaultColors = false;
+        }
+    
+    }
+
+    public void ApplyDefaultColor()
+    {
+        if (gameObject != null && defaultColors != null && !isDefaultColors)
+        {
+            //Fetch the Renderer from the GameObject
+            Renderer rend = gameObject.GetComponent<Renderer>();
+            foreach (Material mat in rend.materials)
+            {
+                if (defaultColors.ContainsKey(mat.name))
+                {
+                    Color color = defaultColors[mat.name];
+                    if (color != null)
+                        mat.SetColor("_Color", color);
+                }
+            }
+            isDefaultColors = true;
+        }
     }
 }
