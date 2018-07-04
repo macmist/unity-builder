@@ -116,6 +116,7 @@ public class GameController : MonoBehaviour {
                             go2.transform.position = new Vector3(i, houseOffset, j);
                             b.GameObject = go2;
                             b.Prefab = house;
+                            b.RotateToDirection();
                         break;
                     }
                 }

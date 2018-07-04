@@ -61,6 +61,13 @@ public class MouseControl : MonoBehaviour
             Vector3 pos = new Vector3(Mathf.Round(newy.x), Mathf.Round(newy.y), Mathf.Round(newy.z));
             pos = StayInMap(pos);
             mousePos = pos;
+            if (Input.GetKeyDown("a")) {
+                currentBuilding.Rotate(false);
+            }
+            if (Input.GetKeyDown("e"))
+            {
+                currentBuilding.Rotate(true);
+            }
             if (currentBuilding.Prefab != null)
             {
                 if (currentBuilding.BuildingType == BuildingType.ROAD)
@@ -153,7 +160,8 @@ public class MouseControl : MonoBehaviour
             if (Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building == null)
             {
                 Building dropable = currentBuilding.SimpleCopy();
-                dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);;
+                dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);
+                dropable.RotateToDirection();
                 Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building = dropable;
             }
 

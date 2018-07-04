@@ -51,6 +51,7 @@ public class Building {
         Building building = new Building();
         building.buildingType = buildingType;
         building.prefab = prefab;
+        building.direction = direction;
         return building;
     }
 
@@ -66,5 +67,57 @@ public class Building {
     /// </summary>
     public void Stop() {
         stopped = true;
+    }
+
+    public void Rotate(bool clockwise) {
+        if (gameObject != null) {
+            int rotation = 90 * (clockwise ? 1 : -1);
+            gameObject.transform.Rotate(new Vector3(0, rotation, 0));
+            switch(direction) {
+                case Direction.DOWN:
+                    direction = clockwise ? Direction.LEFT : Direction.RIGHT;
+                    break;
+                case Direction.UP:
+                    direction = !clockwise ? Direction.LEFT : Direction.RIGHT;
+                    break;
+                case Direction.LEFT:
+                    direction = clockwise ? Direction.UP : Direction.DOWN;
+                    break;
+                case Direction.RIGHT:
+                    direction = !clockwise ? Direction.UP : Direction.DOWN;
+                    break;
+                default:break;
+            }
+        }
+    }
+
+    public void RotateToDirection() {
+        if (gameObject != null)
+        {
+            int dir = 0;
+            switch (this.direction)
+            {
+                case Direction.DOWN:
+                    dir = 0;
+                    break;
+                case Direction.UP:
+                    dir = 180;
+                    break;
+                case Direction.LEFT:
+                    dir = 90;
+                    break;
+                case Direction.RIGHT:
+                    dir = -90;
+                    break;
+                default: break;
+            }
+            gameObject.transform.Rotate(new Vector3(0, dir, 0));
+        }
+    }
+
+    public void RotateToDirection(Direction newDirection)
+    {
+        direction = newDirection;
+        RotateToDirection();
     }
 }
