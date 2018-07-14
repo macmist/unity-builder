@@ -21,6 +21,7 @@ public class MouseControl : MonoBehaviour
     private Vector3 mousePos;
     private float offset;
     private float groundHeight = 1;
+    private bool canPlaceRoad = true;
 
     public void SetCurrentBuilding(Building building) {
         currentBuilding = building;
@@ -71,7 +72,8 @@ public class MouseControl : MonoBehaviour
             if (currentBuilding.Prefab != null)
             {
                 MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
-                if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE)
+                if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE
+                    && Game.getInstance().gold != null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost >= 0)
                 {
                     currentBuilding.ApplyDefaultColor();
                     if (currentBuilding.BuildingType == BuildingType.ROAD)
@@ -91,9 +93,11 @@ public class MouseControl : MonoBehaviour
                                 PrintRoad(path);
                             }
                         }
+                        
                     }
                     else
                     {
+                        Debug.Log("non");
                         if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
                             DropObject();
@@ -102,6 +106,15 @@ public class MouseControl : MonoBehaviour
                 }
                 else
                     currentBuilding.ChangeColor(Color.red);
+                if (obj.Building != null && obj.Building.BuildingType == BuildingType.ROAD && currentBuilding.BuildingType == BuildingType.ROAD)
+                {
+                    if (Input.GetKeyUp(KeyCode.Mouse0))
+                    {
+                        Debug.Log("UP");
+                        PlaceRoad();
+                    }
+                }
+                
             }
         }
     }
@@ -119,18 +132,37 @@ public class MouseControl : MonoBehaviour
         return new Node(x, y, 0, null);
     }
 
-    public void PrintRoad(Node path)
+    private void ClearRoad()
     {
         foreach (GameObject g in road)
         {
             Destroy(g);
             Vector3 position = g.transform.position;
             MapGenerator.TileObject tile = map[(int)position.x, (int)position.z];
-            if (tile.Building != null && tile.Building.BuildingType == BuildingType.ROAD) {
+            if (tile.Building != null && tile.Building.BuildingType == BuildingType.ROAD)
+            {
                 map[(int)position.x, (int)position.z].Building = null;
             }
         }
         road.Clear();
+    }
+
+    private void ColorRoad(Color color)
+    {
+        foreach (GameObject g in road)
+        {
+            Vector3 position = g.transform.position;
+            MapGenerator.TileObject tile = map[(int)position.x, (int)position.z];
+            if (tile.Building != null && tile.Building.BuildingType == BuildingType.ROAD)
+            {
+                map[(int)position.x, (int)position.z].Building.ChangeColor(color);
+            }
+        }
+    }
+
+    public void PrintRoad(Node path)
+    {
+        ClearRoad();
 
         if (path == null) {
             return;
@@ -157,6 +189,36 @@ public class MouseControl : MonoBehaviour
             previous = current;
             current = current.parent;
         }
+        Game currentGame = Game.getInstance();
+        if (road.Count > 0 && road[0] != null)
+        {
+            if (currentGame == null || currentGame.gold == null ||
+                currentGame.gold.CurrentAmount - (road.Count * currentBuilding.Cost) < 0)
+            {
+                canPlaceRoad = false;
+                ColorRoad(Color.red);
+            }
+            else
+                canPlaceRoad = true;
+        }
+    }
+
+    public void PlaceRoad()
+    {
+        if (canPlaceRoad)
+        {
+            foreach (GameObject g in road)
+            {
+                Vector3 position = g.transform.position;
+                MapGenerator.TileObject tile = map[(int)position.x, (int)position.z];
+                if (tile.Building != null && tile.Building.BuildingType == BuildingType.ROAD)
+                {
+                    map[(int)position.x, (int)position.z].Building.Create();
+                }
+            }
+        }
+        else
+            ClearRoad();
     }
 
 
@@ -165,8 +227,10 @@ public class MouseControl : MonoBehaviour
         if (Game.getInstance().map != null && mousePos != null)
         {
             MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
-            if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE)
+            if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE 
+                && Game.getInstance().gold!= null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost > 0)
             {
+                currentBuilding.Create();
                 Building dropable = currentBuilding.SimpleCopy();
                 dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);
                 dropable.RotateToDirection();

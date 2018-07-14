@@ -13,8 +13,9 @@ public enum BuildingType
 public class Building {
     private BuildingType buildingType;
     private Direction direction;
-    private bool stopped = false;
+    protected bool stopped = false;
     private bool isDefaultColors = false;
+    protected int cost = 10;
 
     [System.NonSerialized]
     private Dictionary<string, Color> defaultColors;
@@ -50,6 +51,12 @@ public class Building {
         set { prefab = value; }
     }
 
+    public int Cost
+    {
+        get { return cost; }
+        set { cost = value; }
+    }
+
     /// <summary>
     /// Copy this instance prefab and type.
     /// </summary>
@@ -59,6 +66,7 @@ public class Building {
         building.buildingType = buildingType;
         building.prefab = prefab;
         building.direction = direction;
+        building.cost = cost;
         return building;
     }
 
@@ -170,6 +178,20 @@ public class Building {
                 }
             }
             isDefaultColors = true;
+        }
+    }
+
+    /// <summary>
+    /// Used when placed on ground. Removes cost from game gold
+    /// </summary>
+    public void Create()
+    {
+        Game game = Game.getInstance();
+        if (game != null && game.gold != null)
+        {
+            game.gold.Add(-cost);
+            Start();
+            ApplyDefaultColor();
         }
     }
 }

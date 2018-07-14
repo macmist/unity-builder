@@ -23,6 +23,7 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 12: 02/07: Nouveau bloc, changement de bloc avec 1 et 2, ajout du bloc au clic, sauvegarde et chargement du bloc, placement de tous les blocs a la bonne hauteur
 - Jour 13: 03/07: Correction du sens du premier item de route en fonction du sens des suivants + refactorisation du code + tests UI + maison avec blender
 - Jour 14: 04/07: Rotation des blocs, sauvegarde/chargement des rotations, colorisation du bloc quand impossible de poser. + test UI
+- Jour 15: 14/07: Ajout de l'or en ressource, affichage des ressource, coût des bâtiments, soustraction du cout a la pose, changement de couleur et empechement de pose si pas assez d'argent
 
 # Ressources
 - Argent

@@ -14,8 +14,16 @@ public class Game {
     public bool enableMouse = false;
     public bool stopAstar = false;
 
+    public Resource gold;
+    public Resource people;
+
+    /// <summary>
+    /// Private constructor to ensure it's only called when we want it
+    /// </summary>
     private Game()
     {
+        gold = new Resource("gold", "", 1000);
+        people = new Resource("people", "", 0);
     }
 
     
@@ -24,6 +32,10 @@ public class Game {
         instance = game;
     }
 
+    /// <summary>
+    /// Returns the instance, creates it first if it does not exist
+    /// </summary>
+    /// <returns></returns>
     public static Game getInstance() {
         if (instance == null)
             instance = new Game();

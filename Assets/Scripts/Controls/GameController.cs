@@ -38,6 +38,10 @@ public class GameController : MonoBehaviour {
             MapGenerator.TileObject[,] map = generator.CreateMap(centerNumbers);
             To3D(map);
         }
+        if (Game.getInstance().gold != null)
+            GUILayout.Label(Game.getInstance().gold.Name + " " + Game.getInstance().gold.CurrentAmount);
+        if (Game.getInstance().people != null)
+            GUILayout.Label(Game.getInstance().people.Name + " " + Game.getInstance().people.CurrentAmount);
     }
 
     private void DeleteMapFromScreen(MapGenerator.TileObject[,] map) {

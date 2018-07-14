@@ -21,4 +21,9 @@ public class Resource  {
         this.baseAmount = defaultValue;
         this.currentAmount = defaultValue;
     }
+
+    public void Add(int amount)
+    {
+        currentAmount += amount;
+    }
 }
