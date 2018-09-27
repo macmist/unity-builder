@@ -34,7 +34,7 @@ public class AStar {
         List<Node> neighbors = new List<Node>();
         if (point == null)
             return null;
-        if (point.x - 1 > 0 && map[point.x - 1, point.y].Type != MapGenerator.Tile.TREE)
+        if (point.x - 1 > 0 && map[point.x - 1, point.y].Type != MapGenerator.Tile.TREEGRASS)
         {
             Node n = new Node(point.x - 1, point.y, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
@@ -43,7 +43,7 @@ public class AStar {
                 n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.x + 1 < map.GetLength(0) && map[point.x + 1, point.y].Type != MapGenerator.Tile.TREE)
+        if (point.x + 1 < map.GetLength(0) && map[point.x + 1, point.y].Type != MapGenerator.Tile.TREEGRASS)
         {
             Node n = new Node(point.x + 1, point.y, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
@@ -52,7 +52,7 @@ public class AStar {
                 n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.y - 1 > 0 && map[point.x, point.y - 1].Type != MapGenerator.Tile.TREE)
+        if (point.y - 1 > 0 && map[point.x, point.y - 1].Type != MapGenerator.Tile.TREEGRASS)
         {
             Node n = new Node(point.x, point.y - 1, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);
@@ -61,7 +61,7 @@ public class AStar {
                 n.directionCost = 10;
             neighbors.Add(n);
         }
-        if (point.y + 1 < map.GetLength(0) && map[point.x, point.y + 1].Type != MapGenerator.Tile.TREE)
+        if (point.y + 1 < map.GetLength(0) && map[point.x, point.y + 1].Type != MapGenerator.Tile.TREEGRASS)
         {
             Node n = new Node(point.x, point.y + 1, point.dCost + 1, point);
             n.dHeuristic = Distance2(n);

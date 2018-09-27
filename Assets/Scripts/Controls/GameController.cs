@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
     public GameObject grass;
     public GameObject tree;
     public GameObject dirt;
+    public GameObject treeGrass;
     public bool stopAstar;
     private float groundHeight = 1;
 
@@ -66,16 +67,20 @@ public class GameController : MonoBehaviour {
         objectMap = new GameObject[map.GetLength(0), map.GetLength(1)];
         GameObject road = Resources.Load("Prefabs/road", typeof(GameObject)) as GameObject;
         GameObject house = Resources.Load("Prefabs/house", typeof(GameObject)) as GameObject;
+
         float roadY = 1;
         float houseOffset = roadY / 2;
+        float treeOffset = 0;
 
         Collider houseCollider = null;
         Collider roadCol = null;
+        Collider treeCollider = null;
 
         for (int i = 0; i < map.GetLength(0); ++i)
         {
             for (int j = 0; j < map.GetLength(1); ++j)
             {
+
                 Vector3 pos = new Vector3(i, 0, j);
                 switch (map[i, j].Type)
                 {
@@ -85,12 +90,14 @@ public class GameController : MonoBehaviour {
                     case MapGenerator.Tile.GRASS:
                         objectMap[i, j] = Instantiate(grass, pos, Quaternion.identity);
                         break;
-                    case MapGenerator.Tile.TREE:
-                        objectMap[i, j] = Instantiate(tree, pos, Quaternion.identity);
+                    case MapGenerator.Tile.TREEGRASS:
+                        objectMap[i, j] = Instantiate(treeGrass, pos, Quaternion.identity);
+                        map[i, j].Building = new Tree();
                         break;
                     default: break;
                 }
                 Building b = map[i, j].Building;
+
                 if (b != null)
                 {
                     switch (b.BuildingType)
@@ -111,17 +118,27 @@ public class GameController : MonoBehaviour {
                             b.Prefab = road;
                         break;
                         case BuildingType.HOUSE:
-                            GameObject go2 = Instantiate(house, new Vector3(i, 1, j), Quaternion.identity);
                             if (houseCollider == null)
                             {
-                                houseCollider = go2.GetComponent<Collider>();
+                                houseCollider = house.GetComponent<Collider>();
                                 houseOffset = houseCollider.bounds.size.y / 2 + groundHeight / 2;
                             }
-                            go2.transform.position = new Vector3(i, houseOffset, j);
+                            GameObject go2 = Instantiate(house, new Vector3(i, houseOffset, j), Quaternion.identity);
                             b.GameObject = go2;
                             b.Prefab = house;
                             b.RotateToDirection();
                         break;
+                        case BuildingType.TREE:
+                            if (treeCollider == null)
+                            {
+                                treeCollider = tree.GetComponent<Collider>();
+                                treeOffset = treeCollider.bounds.size.y / 2 + groundHeight / 2;
+                            }
+                            GameObject treeObject = Instantiate(tree, new Vector3(i, 1, j), Quaternion.identity);
+                            b.GameObject = treeObject;
+                            b.Prefab = tree;
+                            break;
+                        default: break;
                     }
                 }
             }

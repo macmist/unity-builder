@@ -6,7 +6,8 @@ using UnityEngine;
 public enum BuildingType
 {
     ROAD,
-    HOUSE
+    HOUSE,
+    TREE
 }
 
 [System.Serializable]

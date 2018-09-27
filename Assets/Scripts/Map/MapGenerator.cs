@@ -53,7 +53,7 @@ public class MapGenerator {
     public enum Tile
     {
         GRASS,
-        TREE,
+        TREEGRASS,
         DIRT
     }
 
@@ -116,7 +116,7 @@ public class MapGenerator {
             Tile tile = Tile.GRASS;
             float random = Random.value;
             if (random > 0.8)
-                tile = Tile.TREE;
+                tile = Tile.TREEGRASS;
             else if (random > 0.7)
                 tile = Tile.DIRT;
             

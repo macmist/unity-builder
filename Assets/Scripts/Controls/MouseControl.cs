@@ -72,7 +72,7 @@ public class MouseControl : MonoBehaviour
             if (currentBuilding.Prefab != null)
             {
                 MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
-                if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE
+                if (obj.Building == null && obj.Type != MapGenerator.Tile.TREEGRASS
                     && Game.getInstance().gold != null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost >= 0)
                 {
                     currentBuilding.ApplyDefaultColor();
@@ -124,7 +124,7 @@ public class MouseControl : MonoBehaviour
         int x = UnityEngine.Random.Range(xBegin, xEnd);
         int y = UnityEngine.Random.Range(0, map.GetLength(1));
 
-        while (map[x, y].Type == MapGenerator.Tile.TREE)
+        while (map[x, y].Type == MapGenerator.Tile.TREEGRASS)
         {
             x = UnityEngine.Random.Range(xBegin, xEnd);
             y = UnityEngine.Random.Range(0, map.GetLength(1));
@@ -227,7 +227,7 @@ public class MouseControl : MonoBehaviour
         if (Game.getInstance().map != null && mousePos != null)
         {
             MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
-            if (obj.Building == null && obj.Type != MapGenerator.Tile.TREE 
+            if (obj.Building == null && obj.Type != MapGenerator.Tile.TREEGRASS
                 && Game.getInstance().gold!= null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost > 0)
             {
                 currentBuilding.Create();

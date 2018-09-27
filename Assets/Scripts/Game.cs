@@ -22,7 +22,7 @@ public class Game {
     /// </summary>
     private Game()
     {
-        gold = new Resource("gold", "", 1000);
+        gold = new Resource("ARJEN", "", 1000);
         people = new Resource("people", "", 0);
     }
 
