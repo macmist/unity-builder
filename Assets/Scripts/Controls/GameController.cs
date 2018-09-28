@@ -72,6 +72,10 @@ public class GameController : MonoBehaviour {
         float houseOffset = roadY / 2;
         float treeOffset = 0;
 
+        groundHeight = grass.GetComponent<Renderer>().bounds.size.y;
+
+ 
+
         Collider houseCollider = null;
         Collider roadCol = null;
         Collider treeCollider = null;
@@ -121,7 +125,8 @@ public class GameController : MonoBehaviour {
                             if (houseCollider == null)
                             {
                                 houseCollider = house.GetComponent<Collider>();
-                                houseOffset = houseCollider.bounds.size.y / 2 + groundHeight / 2;
+                                Renderer r = house.GetComponent<Renderer>();
+                                houseOffset = r.bounds.size.y / 2 + groundHeight / 2;
                             }
                             GameObject go2 = Instantiate(house, new Vector3(i, houseOffset, j), Quaternion.identity);
                             b.GameObject = go2;
@@ -132,9 +137,10 @@ public class GameController : MonoBehaviour {
                             if (treeCollider == null)
                             {
                                 treeCollider = tree.GetComponent<Collider>();
-                                treeOffset = treeCollider.bounds.size.y / 2 + groundHeight / 2;
+                                Renderer r = house.GetComponent<Renderer>();
+                                treeOffset = r.bounds.size.y / 2 + groundHeight / 2;
                             }
-                            GameObject treeObject = Instantiate(tree, new Vector3(i, 1, j), Quaternion.identity);
+                            GameObject treeObject = Instantiate(tree, new Vector3(i, treeOffset, j), Quaternion.identity);
                             b.GameObject = treeObject;
                             b.Prefab = tree;
                             break;
