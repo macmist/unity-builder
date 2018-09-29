@@ -15,7 +15,7 @@ public class Game {
     public bool stopAstar = false;
 
     public Resource gold;
-    public Resource people;
+    public People people;
 
     /// <summary>
     /// Private constructor to ensure it's only called when we want it
@@ -23,7 +23,7 @@ public class Game {
     private Game()
     {
         gold = new Resource("ARJEN", "", 1000);
-        people = new Resource("people", "", 0);
+        people = new People("people", "", 0);
     }
 
     

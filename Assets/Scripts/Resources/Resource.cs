@@ -4,10 +4,10 @@ using UnityEngine;
 
 [System.Serializable]
 public class Resource  {
-    private string name;
-    private string image;
-    private int baseAmount;
-    private int currentAmount;
+    protected string name;
+    protected string image;
+    protected int baseAmount;
+    protected int currentAmount;
 
     public string Name { get { return name; } set { name = value; }}
     public string Image { get { return Image; } set { image = value; }}

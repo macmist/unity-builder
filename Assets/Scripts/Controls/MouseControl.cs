@@ -23,6 +23,8 @@ public class MouseControl : MonoBehaviour
     private float groundHeight = 1;
     private bool canPlaceRoad = true;
 
+    private GameObject humanPrefab;
+
     public void SetCurrentBuilding(Building building) {
         currentBuilding = building;
         if (Game.getInstance().enableMouse) {
@@ -42,6 +44,8 @@ public class MouseControl : MonoBehaviour
     {
 
         astar = new AStar();
+        humanPrefab = Resources.Load("Prefabs/Human", typeof(GameObject)) as GameObject;
+
     }
 
 
@@ -235,6 +239,16 @@ public class MouseControl : MonoBehaviour
                 dropable.GameObject = Instantiate(currentBuilding.Prefab, mousePos, Quaternion.identity);
                 dropable.RotateToDirection();
                 Game.getInstance().map[(int)mousePos.x, (int)mousePos.z].Building = dropable;
+                if (currentBuilding.BuildingType == BuildingType.HOUSE)
+                {
+                    for (int i = 0; i < House.CAPACITY; ++i)
+                    {
+                        Human human = new Human();
+                        human.Target = dropable;
+                        GameObject go = Instantiate(humanPrefab, new Vector3(0, 1, 0), Quaternion.identity);
+                        go.GetComponent<HumanEntity>().Human = human;
+                    }
+                }
             }
 
         }

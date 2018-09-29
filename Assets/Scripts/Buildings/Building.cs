@@ -17,6 +17,7 @@ public class Building {
     protected bool stopped = false;
     private bool isDefaultColors = false;
     protected int cost = 10;
+    protected string tag;
 
     [System.NonSerialized]
     private Dictionary<string, Color> defaultColors;
@@ -43,6 +44,8 @@ public class Building {
         set {
             gameObject = value;
             RegisterColors();
+            if (tag != null)
+                gameObject.tag = tag;
         }
     }
 
@@ -58,6 +61,12 @@ public class Building {
         set { cost = value; }
     }
 
+    public string Tag
+    {
+        get { return tag; }
+        set { tag = value; }
+    }
+
     /// <summary>
     /// Copy this instance prefab and type.
     /// </summary>
@@ -68,6 +77,7 @@ public class Building {
         building.prefab = prefab;
         building.direction = direction;
         building.cost = cost;
+        building.tag = tag;
         return building;
     }
 
