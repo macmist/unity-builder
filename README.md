@@ -26,6 +26,8 @@ Trello pour suivre les tâches et l'avancement: https://trello.com/b/s5jmRmqs/uni
 - Jour 15: 14/07: Ajout de l'or en ressource, affichage des ressource, coût des bâtiments, soustraction du cout a la pose, changement de couleur et empechement de pose si pas assez d'argent
 - Jour 16: 28/09: Refactorisation du code, les arbres sont maintenant séparés du sol et pourront êtres enlevés
 - Jour 17: 29/09: Amelioration de la ressource People, creation d'une classe Human et d'une HumanEntity qui se déplace simplement vers une maison.
+- Jour 18: 17/10: Sauvegarde et chargement des humains et de leurs position, maison associees.
+
 # Ressources
 - Argent
 - Habitants
