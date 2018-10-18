@@ -17,6 +17,34 @@ public class Game {
     public Resource gold;
     public People people;
 
+    [System.NonSerialized]
+    private List<Human> housedHumans;
+
+    [SerializeField]
+    private List<Human> humans;
+
+    [System.NonSerialized]
+    private List<Human> roamingHumans;
+
+    public  List<Human> HousedHumans
+    {
+        get { return housedHumans; }
+        set { housedHumans = value; }
+    }
+
+    public List<Human> Humans
+    {
+        get { return humans; }
+        set { humans = value; }
+    }
+
+    public List<Human> RoamingHumans
+    {
+        get { return roamingHumans; }
+        set { roamingHumans = value; }
+    }
+
+
     /// <summary>
     /// Private constructor to ensure it's only called when we want it
     /// </summary>
@@ -24,6 +52,37 @@ public class Game {
     {
         gold = new Resource("ARJEN", "", 1000);
         people = new People("people", "", 0);
+    }
+
+    public void BeforeSave()
+    {
+        humans = new List<Human>();
+        if (HumanEntity.Humans != null)
+        {
+            HumanEntity.Humans.ForEach(delegate (HumanEntity h)
+            {
+                humans.Add(h.Human);
+            });
+        }
+
+    }
+
+    public void AfterSaveAndLoad(bool loaded)
+    {
+
+        //humans = null;
+        //roamingHumans = null;
+        //housedHumans = null;
+        if (humans != null) {
+            housedHumans = new List<Human>();
+            roamingHumans = new List<Human>();
+            foreach(Human h in humans) {
+                if (h.HasAHouse)
+                    housedHumans.Add(h);
+                else
+                    roamingHumans.Add(h);
+            }
+        }
     }
 
     

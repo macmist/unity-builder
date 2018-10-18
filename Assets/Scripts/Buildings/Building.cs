@@ -12,21 +12,24 @@ public enum BuildingType
 
 [System.Serializable]
 public class Building {
-    private BuildingType buildingType;
-    private Direction direction;
+    protected BuildingType buildingType;
+    protected Direction direction;
     protected bool stopped = false;
-    private bool isDefaultColors = false;
+    protected bool isDefaultColors = false;
     protected int cost = 10;
     protected string tag;
 
-    [System.NonSerialized]
-    private Dictionary<string, Color> defaultColors;
+    [SerializeField]
+    protected System.Guid guid;
 
     [System.NonSerialized]
-    private GameObject gameObject;
+    protected Dictionary<string, Color> defaultColors;
 
     [System.NonSerialized]
-    private GameObject prefab;
+    protected GameObject gameObject;
+
+    [System.NonSerialized]
+    protected GameObject prefab;
 
     public BuildingType BuildingType {
         get { return buildingType; }
@@ -67,18 +70,31 @@ public class Building {
         set { tag = value; }
     }
 
+    public System.Guid Guid
+    {
+        get { return guid; }
+        set { guid = value; }
+    }
+
     /// <summary>
     /// Copy this instance prefab and type.
     /// </summary>
     /// <returns>The copy.</returns>
     public Building SimpleCopy() {
-        Building building = new Building();
-        building.buildingType = buildingType;
-        building.prefab = prefab;
-        building.direction = direction;
-        building.cost = cost;
-        building.tag = tag;
+        Building building = new Building
+        {
+            buildingType = buildingType,
+            prefab = prefab,
+            direction = direction,
+            cost = cost,
+            tag = tag,
+            guid = System.Guid.NewGuid()
+        };
         return building;
+    }
+
+    public Building() {
+        guid = System.Guid.NewGuid();
     }
 
     /// <summary>

@@ -101,7 +101,6 @@ public class MouseControl : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("non");
                         if (Input.GetKeyDown(KeyCode.Mouse0))
                         {
                             DropObject();
@@ -232,7 +231,7 @@ public class MouseControl : MonoBehaviour
         {
             MapGenerator.TileObject obj = Game.getInstance().map[(int)mousePos.x, (int)mousePos.z];
             if (obj.Building == null && obj.Type != MapGenerator.Tile.TREEGRASS
-                && Game.getInstance().gold!= null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost > 0)
+                && Game.getInstance().gold!= null && Game.getInstance().gold.CurrentAmount - currentBuilding.Cost >= 0)
             {
                 currentBuilding.Create();
                 Building dropable = currentBuilding.SimpleCopy();
@@ -244,7 +243,7 @@ public class MouseControl : MonoBehaviour
                     for (int i = 0; i < House.CAPACITY; ++i)
                     {
                         Human human = new Human();
-                        human.Target = dropable;
+                        human.Target = House.FromBuilding(dropable);
                         GameObject go = Instantiate(humanPrefab, new Vector3(0, 1, 0), Quaternion.identity);
                         go.GetComponent<HumanEntity>().Human = human;
                     }

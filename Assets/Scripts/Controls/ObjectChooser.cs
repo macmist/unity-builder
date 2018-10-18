@@ -27,6 +27,8 @@ public class ObjectChooser : MonoBehaviour {
             GameObject house = Resources.Load("Prefabs/house", typeof(GameObject)) as GameObject;
             current = new House();
             current.Prefab = house;
+            house.tag = house.tag;
+            house.GetComponent<HouseEntity>().House = House.FromBuilding(current);
             mouseController.SetCurrentBuilding(current);
         }
     }

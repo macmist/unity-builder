@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameController : MonoBehaviour {
     private Game currentGame;
     private MapGenerator generator;
@@ -13,6 +14,7 @@ public class GameController : MonoBehaviour {
     public GameObject treeGrass;
     public bool stopAstar;
     private float groundHeight = 1;
+    private GameObject mapObject;
 
     void Start()
     {
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour {
             SaveLoad.Load();
             currentGame = Game.getInstance();
             To3D(currentGame.map);
+            InstantiateHumans();
         }
         if (GUILayout.Button("Create Map"))
         {
@@ -41,8 +44,9 @@ public class GameController : MonoBehaviour {
         }
         if (Game.getInstance().gold != null)
             GUILayout.Label(Game.getInstance().gold.Name + " " + Game.getInstance().gold.CurrentAmount);
-        if (Game.getInstance().people != null)
-            GUILayout.Label(Game.getInstance().people.Name + " " + Game.getInstance().people.CurrentAmount);
+        GUILayout.Label("humans " + HumanEntity.HumanCount);
+        GUILayout.Label("roaming humans " + HumanEntity.RoamingHumanCount);
+        GUILayout.Label("housed humans " + HumanEntity.HousedHumanCount);
     }
 
     private void DeleteMapFromScreen(MapGenerator.TileObject[,] map) {
@@ -59,6 +63,7 @@ public class GameController : MonoBehaviour {
                     Destroy(objectMap[i, j]);
                 }
             }
+            Destroy(mapObject);
         }
     }
 
@@ -80,8 +85,13 @@ public class GameController : MonoBehaviour {
         Collider roadCol = null;
         Collider treeCollider = null;
 
+        mapObject = new GameObject("map");
+
+        GameObject floor = new GameObject("floor");
+        floor.transform.parent = mapObject.transform;
         for (int i = 0; i < map.GetLength(0); ++i)
         {
+
             for (int j = 0; j < map.GetLength(1); ++j)
             {
 
@@ -90,18 +100,21 @@ public class GameController : MonoBehaviour {
                 {
                     case MapGenerator.Tile.DIRT:
                         objectMap[i, j] = Instantiate(dirt, pos, Quaternion.identity);
+                        objectMap[i, j].transform.parent = floor.transform;
                         break;
                     case MapGenerator.Tile.GRASS:
                         objectMap[i, j] = Instantiate(grass, pos, Quaternion.identity);
+                        objectMap[i, j].transform.parent = floor.transform;
                         break;
                     case MapGenerator.Tile.TREEGRASS:
                         objectMap[i, j] = Instantiate(treeGrass, pos, Quaternion.identity);
+                        objectMap[i, j].transform.parent = floor.transform;
                         map[i, j].Building = new Tree();
                         break;
                     default: break;
                 }
                 Building b = map[i, j].Building;
-
+                
                 if (b != null)
                 {
                     switch (b.BuildingType)
@@ -120,6 +133,7 @@ public class GameController : MonoBehaviour {
                                 go.transform.Rotate(0, 90, 0);
                             b.GameObject = go;
                             b.Prefab = road;
+                            go.transform.parent = mapObject.transform;
                         break;
                         case BuildingType.HOUSE:
                             if (houseCollider == null)
@@ -129,7 +143,12 @@ public class GameController : MonoBehaviour {
                                 houseOffset = r.bounds.size.y / 2 + groundHeight / 2;
                             }
                             GameObject go2 = Instantiate(house, new Vector3(i, houseOffset, j), Quaternion.identity);
+                            go2.tag = b.Tag;
                             b.GameObject = go2;
+                            go2.GetComponent<HouseEntity>().House = House.FromBuilding(b);
+
+                            go2.transform.parent = mapObject.transform;
+
                             b.Prefab = house;
                             b.RotateToDirection();
                         break;
@@ -137,11 +156,13 @@ public class GameController : MonoBehaviour {
                             if (treeCollider == null)
                             {
                                 treeCollider = tree.GetComponent<Collider>();
-                                Renderer r = house.GetComponent<Renderer>();
-                                treeOffset = r.bounds.size.y / 2 + groundHeight / 2;
+                                CapsuleCollider col = tree.GetComponent<CapsuleCollider>();
+                                treeOffset = (col.height) / 2 + groundHeight / 2 - col.center.y;
                             }
                             GameObject treeObject = Instantiate(tree, new Vector3(i, treeOffset, j), Quaternion.identity);
                             b.GameObject = treeObject;
+                            treeObject.transform.parent = mapObject.transform;
+
                             b.Prefab = tree;
                             break;
                         default: break;
@@ -151,6 +172,31 @@ public class GameController : MonoBehaviour {
         }
         Game.getInstance().map = map;   
         Game.getInstance().enableMouse = true;
+    }
+
+    private void InstantiateHumans() {
+        GameObject[] houses = GameObject.FindGameObjectsWithTag("house");
+        
+
+        GameObject humanPrefab = Resources.Load("Prefabs/Human", typeof(GameObject)) as GameObject;
+        if (Game.getInstance().Humans != null) {
+            foreach (Human h in Game.getInstance().Humans) {
+                GameObject go = Instantiate(humanPrefab, h.Position, Quaternion.identity);
+                go.GetComponent<HumanEntity>().Human = h;
+                if (houses != null) {
+                    foreach (GameObject houseObj in houses) {
+                        HouseEntity house = houseObj.GetComponent<HouseEntity>();
+                        if (house != null && house.House.Guid.Equals(h.HouseGuid))
+                        {
+                            h.Target = house.House;
+                            break;
+                        }                    
+                    }
+                }
+            }
+        }
+
+
     }
 
     private void Update()
